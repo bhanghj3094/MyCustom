@@ -3,4 +3,7 @@
     <string name="tab1_name">Contacts</string>
     <string name="tab2_name">Gallery</string>
     <string name="tab3_name">Tab3</string>
+    <string name="facebook_app_id">2574172016142497</string>
+    <string name="fb_login_protocol_scheme">fb2574172016142497</string>
+
 </resources>

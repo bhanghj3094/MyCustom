@@ -1,6 +1,5 @@
 package com.example.q.mycustom;
 
-import android.graphics.pdf.PdfDocument;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
