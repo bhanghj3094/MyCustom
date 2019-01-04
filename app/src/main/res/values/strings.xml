@@ -5,5 +5,10 @@
     <string name="tab3_name">Tab3</string>
     <string name="facebook_app_id">2574172016142497</string>
     <string name="fb_login_protocol_scheme">fb2574172016142497</string>
+    <string name="share">SHARE</string>
+    <string name="editor">EDITOR</string>
+    <string name="back_to_list">back to list</string>
+    <string name="crop_image">CROP IMAGE</string>
+    <string name="save_image">SAVE IMAGE</string>
 
 </resources>
