@@ -13,11 +13,8 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-
 import org.json.JSONObject;
-
 import java.util.Arrays;
-
 
 // key hash: jMLbnsZ09b37hPUKLLMsBK4pR7I=
 
@@ -39,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("result",object.toString());
+                        Log.v("result", object.toString());
                     }
                 });
 
@@ -56,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-                Log.e("LoginErr",error.toString());
+                Log.e("LoginErr", error.toString());
             }
         });
     }
@@ -65,5 +62,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 }
