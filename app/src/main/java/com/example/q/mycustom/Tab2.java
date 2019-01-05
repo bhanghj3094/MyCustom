@@ -67,6 +67,7 @@ public class Tab2 extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
+
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
         private String imgData = null;
