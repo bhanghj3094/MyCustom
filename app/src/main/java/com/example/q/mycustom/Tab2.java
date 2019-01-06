@@ -67,7 +67,7 @@ public class Tab2 extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
-
+    
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
         private String imgData = null;
@@ -116,12 +116,6 @@ public class Tab2 extends Fragment {
                 imageView = (ImageView) convertView;
             }
 
-//            BitmapFactory.Options bo = new BitmapFactory.Options();
-//            bo.inSampleSize = 16;
-//            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
-//            Bitmap resized = Bitmap.createScaledBitmap(bmp, 150, 150, true);
-//            imageView.setImageBitmap(resized);
-
             Glide.with(mContext).load(thumbsDataList.get(position)).into(imageView);
             return imageView;
         }
@@ -152,9 +146,8 @@ public class Tab2 extends Fragment {
                         thumbsIDs.add(thumbsID);
                         thumbsDatas.add(thumbsData);
                     }
-                }while (imageCursor.moveToPrevious());
+                } while (imageCursor.moveToPrevious());
             }
-            //imageCursor.close();
             return;
         }
 
@@ -176,7 +169,6 @@ public class Tab2 extends Fragment {
                     imgname = imageCursor.getString(imageName);
                 }
             }
-            //imageCursor.close();
             return imageDataPath;
         }
     }

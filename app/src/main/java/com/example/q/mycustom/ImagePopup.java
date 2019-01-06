@@ -26,9 +26,7 @@ import java.io.File;
 import java.util.Arrays;
 
 public class ImagePopup extends FragmentActivity implements View.OnClickListener {
-    private Context mContext = null;
-    private final int imgWidth = 320;
-    private final int imgHeight = 372;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,31 +35,21 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         setContentView(R.layout.activity_imagepopup);
         mContext = this;
 
-        /* transmitted message */
+        // Information with intent
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-
         final String imgPath = extras.getString("filepath");
         final String imgName = extras.getString("filename");
 
-        /** 완성된 이미지 보여주기  */
-        ImageView iv = (ImageView) findViewById(R.id.imageView);
-
+        // image fullscreen view
+        ImageView iv = findViewById(R.id.imageView);
         Glide.with(mContext).load(imgPath).into(iv);
-
-
-//        /* show completed image */
-//        PhotoView photoView = findViewById(R.id.photoView);
-//        BitmapFactory.Options bfo = new BitmapFactory.Options();
-//        bfo.inSampleSize = 2;
-//        Bitmap bm = BitmapFactory.decodeFile(imgPath, bfo);
-//        //Bitmap resized = Bitmap.createScaledBitmap(bm, imgWidth, imgHeight, true);
-//        photoView.setImageBitmap(bm);
 
         // button for return
         Button buttonBack = findViewById(R.id.buttonBack);
         buttonBack.setOnClickListener(this);
 
+        // button for sharing
         Button buttonShare = (Button) findViewById(R.id.buttonShare);
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,24 +75,14 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
                 startActivity(Intent.createChooser(intent, "Choose")); // bring up sharing activity
             }
         });
-//
-//        Button buttonEditor = findViewById(R.id.buttonEditor);
-//        buttonEditor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String[] parseDirectory = imgPath.split("/");
-//                String directory = TextUtils.join("/", Arrays.copyOfRange(parseDirectory, 0, parseDirectory.length - 1));
-//
-//                File file = new File(directory, imgName); // 파일 경로 설정 + imgName 은 파일 이름
-//                Uri uri = FileProvider.getUriForFile(mContext, "com.bignerdranch.android.test.fileprovider", file);
-//
-//                Intent i = new Intent(mContext, EditorActivity.class);
-//                i.putExtra("filename", imgName);
-//                i.putExtra("filedirectory", directory);
-//                i.putExtra(i.EXTRA_STREAM, uri);
-//                startActivity(i);
-//            }
-//        });
+
+        /* PUSH IMAGE to Database -------------------------------------------------------------- */
+        // ===================================================================================== //
+        
+
+
+
+
         Log.d("wrong", "successful in ImagePopup onCreate");
     }
 
