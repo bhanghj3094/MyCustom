@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class Tab2 extends Fragment {
     View rootView;
-    String imgname = null;
+    String imgname;
     GridView gridview;
 
     @Override

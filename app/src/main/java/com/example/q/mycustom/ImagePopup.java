@@ -1,5 +1,6 @@
 package com.example.q.mycustom;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,20 +14,42 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImagePopup extends FragmentActivity implements View.OnClickListener {
     private Context mContext;
+    String urlUpload = "http://143.248.140.106:1880/api/post/image";
+    Bitmap bitmap;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +59,14 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         mContext = this;
 
         // Information with intent
-        Intent i = getIntent();
-        Bundle extras = i.getExtras();
+        Bundle extras = getIntent().getExtras();
         final String imgPath = extras.getString("filepath");
         final String imgName = extras.getString("filename");
+        // Parse imgPath to only directory
+        String[] parseDirectory = imgPath.split("/");
+        final String directory = TextUtils.join("/", Arrays.copyOfRange(parseDirectory, 0, parseDirectory.length - 1));
+        Log.d("wrong", "directory: " + directory);
+        Log.d("wrong", "image name: " + imgName);
 
         // image fullscreen view
         ImageView iv = findViewById(R.id.imageView);
@@ -60,10 +87,6 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
 
             private void shareImage() {
                 Log.d("wrong", "begin shareImage");
-                String[] parseDirectory = imgPath.split("/");
-                String directory = TextUtils.join("/", Arrays.copyOfRange(parseDirectory, 0, parseDirectory.length - 1));
-                Log.d("wrong", "directory: " + directory);
-                Log.d("wrong", "image name: " + imgName);
 
                 File file = new File(directory, imgName); // 파일 경로 설정 + imgName 은 파일 이름
                 Uri uri = FileProvider.getUriForFile(mContext, "com.example.q.mycustom.provider", file);
@@ -76,11 +99,62 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
             }
         });
 
-        /* PUSH IMAGE to Database -------------------------------------------------------------- */
         // ===================================================================================== //
-        
+        /* ============================ POST IMAGE to Server =================================== */
+        // ===================================================================================== //
+        Button buttonUpload = findViewById(R.id.buttonUpload);
+        buttonUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("errT", "start upload");
+                progressDialog = new ProgressDialog(ImagePopup.this);
+                progressDialog.setTitle("Uploading");
+                progressDialog.setMessage("Please wait..");
+                progressDialog.show();
+                Log.d("errT", "showed progressDialog");
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, urlUpload, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("errT", "Response here!");
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.d("errT", "eeerrrroorrrr");
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), volleyError.toString(), Toast.LENGTH_LONG).show(); //"error: " + error.toString()
+                    }
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        Log.d("errT", "into the getParams()");
 
+                        // make image bitmap
+                        Log.d("errT", "image Path is: " + imgPath);
+                        Uri uri = Uri.fromFile(new File(imgPath));
+                        Log.d("errT", "uri of the file is: " + uri);
+                        try{ InputStream inputStream = getContentResolver().openInputStream(uri);
+                             bitmap = BitmapFactory.decodeStream(inputStream);
+                            Log.d("errT", "success in finding file and change it to bitmap");
+                        } catch (FileNotFoundException e) { e.printStackTrace(); }
 
+                        // change image into String with Base64
+                        String imageData = imageToString(bitmap);
+                        params.put("image", imageData);
+                        Log.d("errT", "Here image changed to Base64~");
+
+                        //progressDialog.dismiss();
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(ImagePopup.this);
+                requestQueue.add(stringRequest);
+                Log.d("errT", "end of onClick buttonUpload");
+            }
+        });
 
 
         Log.d("wrong", "successful in ImagePopup onCreate");
@@ -91,6 +165,15 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
             case R.id.buttonBack:
                 finish();
         }
+    }
+
+    private String imageToString(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        byte[] imageBytes = outputStream.toByteArray();
+
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 
 

@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonShare"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonEditor" />
+        app:layout_constraintStart_toEndOf="@+id/buttonUpload" />
 
     <Button
         android:id="@+id/buttonShare"
@@ -46,11 +46,11 @@
         app:layout_constraintVertical_bias="0.435" />
 
     <Button
-        android:id="@+id/buttonEditor"
+        android:id="@+id/buttonUpload"
         android:layout_width="86dp"
         android:layout_height="44dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/editor"
+        android:text="@string/upload"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonBack"
         app:layout_constraintHorizontal_bias="0.5"
