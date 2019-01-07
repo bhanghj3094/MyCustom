@@ -21,7 +21,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 
@@ -39,7 +38,6 @@
             </intent-filter>
         </activity>
 
-
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -49,14 +47,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity">
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".ImagePopup"></activity>
+        <activity android:name=".servercontact"></activity>
+        <activity android:name=".ServerImages"></activity>
 
-        <activity android:name=".ImagePopup">
-        </activity>
-
-        <activity android:name=".servercontact">
-        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 
 public class Tab2 extends Fragment {
     View rootView;
-    String imgname = null;
+    String imgname;
     GridView gridview;
 
     @Override
@@ -64,10 +65,19 @@ public class Tab2 extends Fragment {
                 }
             });
         }
+
+        Button imageDB_Button = rootView.findViewById(R.id.imageDB_Button);
+        imageDB_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ServerImages.class);
+                startActivity(intent);
+            }
+        });
         // Inflate the layout for this fragment
         return rootView;
     }
-
+    
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
         private String imgData = null;
@@ -91,6 +101,7 @@ public class Tab2 extends Fragment {
             Toast.makeText(getActivity(), "imagepath : " + imgPath + "\nimage name : " + imgname + "!", Toast.LENGTH_SHORT).show();
             startActivityForResult(i,1);
         }
+
         public int getCount() {
             return thumbsIDList.size(); //mThumbIds.length;
         }
@@ -104,9 +115,9 @@ public class Tab2 extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d("eTest", "Tab2 getView");
             ImageView imageView;
             if (convertView == null) { // not recycled
-                Log.d("wrong", "convertView == null");
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(500,500));
                 imageView.setAdjustViewBounds(false);
@@ -115,12 +126,6 @@ public class Tab2 extends Fragment {
             } else {
                 imageView = (ImageView) convertView;
             }
-
-//            BitmapFactory.Options bo = new BitmapFactory.Options();
-//            bo.inSampleSize = 16;
-//            Bitmap bmp = BitmapFactory.decodeFile(thumbsDataList.get(position), bo);
-//            Bitmap resized = Bitmap.createScaledBitmap(bmp, 150, 150, true);
-//            imageView.setImageBitmap(resized);
 
             Glide.with(mContext).load(thumbsDataList.get(position)).into(imageView);
             return imageView;
@@ -152,9 +157,8 @@ public class Tab2 extends Fragment {
                         thumbsIDs.add(thumbsID);
                         thumbsDatas.add(thumbsData);
                     }
-                }while (imageCursor.moveToPrevious());
+                } while (imageCursor.moveToPrevious());
             }
-            //imageCursor.close();
             return;
         }
 
@@ -176,7 +180,6 @@ public class Tab2 extends Fragment {
                     imgname = imageCursor.getString(imageName);
                 }
             }
-            //imageCursor.close();
             return imageDataPath;
         }
     }
