@@ -39,22 +39,22 @@ public class ServerImages extends AppCompatActivity {
     ArrayList<String> imageNames = new ArrayList<String>();
     ArrayList<byte[]> imageObjs = new ArrayList<byte[]>();
 
-//    @Override
-//    public void onResume()
-//    {
-//        super.onResume();
-//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
-//            getImagesDB();
-//            final ImageAdapter ia = new ImageAdapter(context, imageObjs);
-//            gridview.setAdapter(ia);
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
+            getImagesDB();
+            final ImageAdapter ia = new ImageAdapter(context, imageObjs);
+            gridview.setAdapter(ia);
 //            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                public void onItemClick(AdapterView<?> parent, View v,
 //                                        int position, long id) {
 //                    ia.callImageViewer(position);
 //                }
 //            });
-//        }
-//    }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +78,8 @@ public class ServerImages extends AppCompatActivity {
         }
 
         public final void callImageViewer(int selectedIndex) {
-            Intent i = new Intent(mContext, ImagePopup.class);
-            startActivityForResult(i,1);
+//            Intent i = new Intent(mContext, ImagePopup.class);
+//            startActivityForResult(i,1);
         }
 
         @Override
@@ -139,7 +139,7 @@ public class ServerImages extends AppCompatActivity {
                         Log.d("eTest", name);
                         Log.d("eTest", decodedString.toString());
                     }
-                    // 비동기적 코드이기때문에 여기있어야 한다!!!!!!
+                    // 비동기적 코드이기 때문에 여기 있어야 한다!!!!!!
                     final ImageAdapter ia = new ImageAdapter(context, imageObjs);
                     gridview.setAdapter(ia);
                 } catch (JSONException e) { e.printStackTrace(); }

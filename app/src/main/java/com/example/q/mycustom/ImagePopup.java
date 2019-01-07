@@ -91,8 +91,6 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
             }
         });
 
-        final EditText editText = findViewById(R.id.edittext);
-
         // ===================================================================================== //
         /* ============================ POST IMAGE to Server =================================== */
         // ===================================================================================== //

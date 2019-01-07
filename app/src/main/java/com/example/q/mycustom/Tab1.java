@@ -21,9 +21,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -49,6 +52,7 @@ public class Tab1 extends Fragment {
     private EditText editSearch;
     private ArrayList<phonenum_item> list;
     private ArrayList<phonenum_item> arrayList;
+    private ArrayList<phonenum_item> data;
     private CallbackManager callbackManager;
     private Animation fab_open, fab_close;
     private Boolean isFabOpen = false;
@@ -70,7 +74,6 @@ public class Tab1 extends Fragment {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_DENIED) {
-            ArrayList<phonenum_item> data = new ArrayList<>();
             try {
                 data = getContactList();
             } catch (JSONException e) {
@@ -79,8 +82,16 @@ public class Tab1 extends Fragment {
             mRecyclerView = rootView.findViewById(R.id.phonenum);
             mLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
-            MyAdapter myAdapter = new MyAdapter(data);
+            final MyAdapter myAdapter = new MyAdapter(data);
             mRecyclerView.setAdapter(myAdapter);
+
+            ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                @Override
+                public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                    // do it
+                    myAdapter.callContactViewer(position);
+                }
+            });
 
             //검색 기능 구현
             editSearch = (EditText) rootView.findViewById(R.id.editSearch);
@@ -89,7 +100,6 @@ public class Tab1 extends Fragment {
             list = new ArrayList<phonenum_item>();
             arrayList.addAll(data);
             list.addAll(data);
-
 
             editSearch.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -112,8 +122,8 @@ public class Tab1 extends Fragment {
                 }
             });
 
-
         }
+
         //facebook callback
         callbackManager = CallbackManager.Factory.create();
 
@@ -240,7 +250,8 @@ public class Tab1 extends Fragment {
                 }
             }
         }
-        MyAdapter mySearchAdapter = new MyAdapter(list);
+        data = list;
+        MyAdapter mySearchAdapter = new MyAdapter(data);
         mRecyclerView.setAdapter(mySearchAdapter);
     }
 
@@ -327,6 +338,66 @@ public class Tab1 extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            ImageView icon;
+            TextView name;
+            TextView phonenum;
+
+            MyViewHolder(View view) {
+                super(view);
+                icon = view.findViewById(R.id.imageView);
+                name = view.findViewById(R.id.textView1);
+                phonenum = view.findViewById(R.id.textView2);
+            }
+        }
+
+        public final void callContactViewer(int selectedIndex) {
+            Intent i = new Intent(getContext(), ContactPopup.class);
+
+            i.putExtra("name", data.get(selectedIndex).getName());
+            i.putExtra("number", data.get(selectedIndex).getPhonenum());
+            startActivityForResult(i, 1);
+        }
+
+        private ArrayList<phonenum_item> data;
+
+        MyAdapter(ArrayList<phonenum_item> data) {
+            this.data = data;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.phonenum_item, parent, false);
+
+            return new MyViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+            MyViewHolder myViewHolder = (MyViewHolder) holder;
+
+            myViewHolder.icon.setImageResource(data.get(position).getIcon());
+            myViewHolder.name.setText(data.get(position).getName());
+            myViewHolder.phonenum.setText(data.get(position).getPhonenum());
+        }
+
+        @Override
+        public int getItemCount() {
+            Integer i = 0;
+            try {
+                return data.size();
+            } catch (NullPointerException e) {
+                return 0;
+            }
+        }
+
     }
 
 
