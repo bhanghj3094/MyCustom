@@ -49,9 +49,13 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        Integer i = 0;
+        try{
+            return data.size();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
-
 
 }
 

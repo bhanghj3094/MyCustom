@@ -18,7 +18,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
 
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
@@ -52,6 +53,9 @@
         </activity>
 
         <activity android:name=".ImagePopup">
+        </activity>
+
+        <activity android:name=".servercontact">
         </activity>
 
         <provider

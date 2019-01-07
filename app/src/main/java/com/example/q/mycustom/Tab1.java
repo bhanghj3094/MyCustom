@@ -91,7 +91,6 @@ public class Tab1 extends Fragment {
             list.addAll(data);
 
 
-
             editSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -126,7 +125,7 @@ public class Tab1 extends Fragment {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.v("result",object.toString());
+                        Log.v("result", object.toString());
                     }
                 });
 
@@ -143,12 +142,13 @@ public class Tab1 extends Fragment {
 
             @Override
             public void onError(FacebookException error) {
-                Log.e("LoginErr",error.toString());
+                Log.e("LoginErr", error.toString());
             }
         });
 
         //이미지 버튼 구현
         ImageButton cloudButton = rootView.findViewById(R.id.cloudButton);
+        final ImageButton servercontactButton = rootView.findViewById(R.id.servercontact);
         cloudButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +162,9 @@ public class Tab1 extends Fragment {
 
                 //숨김 버튼 다시 나타내는 애니메이션
                 Button facebookbutton = rootView.findViewById(R.id.login_button);
-                facebookbutton.setVisibility(facebookbutton.getVisibility() == View.VISIBLE? View.GONE: View.VISIBLE);
+                facebookbutton.setVisibility(facebookbutton.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                servercontactButton.setVisibility(servercontactButton.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
 
                 fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
                 fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
@@ -175,14 +177,32 @@ public class Tab1 extends Fragment {
 //                }
             }
         });
+        //show server contact 이미지 버튼
+        servercontactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(getActivity(), servercontact.class);
+                startActivity(it);
+            }
+        });
+
+        //add to a contact 버튼
+        Button addcontact = rootView.findViewById(R.id.addcontact);
+        addcontact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addContact = new Intent(ContactsContract.Intents.Insert.ACTION);
+                addContact.setType(ContactsContract.RawContacts.CONTENT_TYPE);
+                startActivity(addContact);
+            }
+        });
+
 
         return rootView;
 
     }
-    public void add_contact(View view) {
-        Intent intent = new Intent(Intent.ACTION_INSERT, ContactsContract.Contacts.CONTENT_URI);
-        startActivity(intent);
-    }
+
+
     @Override
     public void onResume() {
         Log.d("cheeck", "on resume tab1");
@@ -211,13 +231,11 @@ public class Tab1 extends Fragment {
 
         if (charText.length() == 0) {
             list.addAll(arrayList);
-        }
-        else{
-            for(int i = 0; i < arrayList.size(); i++){
+        } else {
+            for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).getName().toLowerCase().contains(charText)) {
                     list.add(arrayList.get(i));
-                }
-                else if (arrayList.get(i).getPhonenum().contains(charText)) {
+                } else if (arrayList.get(i).getPhonenum().contains(charText)) {
                     list.add(arrayList.get(i));
                 }
             }
@@ -290,12 +308,15 @@ public class Tab1 extends Fragment {
 
     public void anim() {
         Button facebookbutton = rootView.findViewById(R.id.login_button);
+        ImageButton servercontactButton = rootView.findViewById(R.id.servercontact);
         if (isFabOpen) {
             facebookbutton.startAnimation(fab_close);
+            servercontactButton.startAnimation(fab_close);
             isFabOpen = false;
 
         } else {
             facebookbutton.startAnimation(fab_open);
+            servercontactButton.startAnimation(fab_open);
             isFabOpen = true;
         }
     }
@@ -307,7 +328,6 @@ public class Tab1 extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
 }
