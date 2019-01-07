@@ -10,5 +10,6 @@
     <string name="back_to_list">back to list</string>
     <string name="crop_image">CROP IMAGE</string>
     <string name="save_image">SAVE IMAGE</string>
+    <string name="image_name">upload image name as..</string>
 
 </resources>

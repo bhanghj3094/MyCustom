@@ -9,8 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 
-
-
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
@@ -18,6 +17,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -44,12 +44,17 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Future;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ImagePopup extends FragmentActivity implements View.OnClickListener {
     private Context mContext;
     String urlUpload = "http://143.248.140.106:1880/api/post/image";
     Bitmap bitmap;
     ProgressDialog progressDialog;
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +104,8 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
             }
         });
 
+        final EditText editText = findViewById(R.id.edittext);
+
         // ===================================================================================== //
         /* ============================ POST IMAGE to Server =================================== */
         // ===================================================================================== //
@@ -111,7 +118,7 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
                 progressDialog.setTitle("Uploading");
                 progressDialog.setMessage("Please wait..");
                 progressDialog.show();
-                Log.d("errT", "showed progressDialog");
+
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, urlUpload, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -124,30 +131,27 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
                     public void onErrorResponse(VolleyError volleyError) {
                         Log.d("errT", "eeerrrroorrrr");
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), volleyError.toString(), Toast.LENGTH_LONG).show(); //"error: " + error.toString()
+                        Toast.makeText(getApplicationContext(), "error: " + volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }){ // adding parameter to send
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
                         Log.d("errT", "into the getParams()");
+                        Map<String, String> parameters = new HashMap<String, String>();
 
                         // make image bitmap
-                        Log.d("errT", "image Path is: " + imgPath);
                         Uri uri = Uri.fromFile(new File(imgPath));
-                        Log.d("errT", "uri of the file is: " + uri);
                         try{ InputStream inputStream = getContentResolver().openInputStream(uri);
-                             bitmap = BitmapFactory.decodeStream(inputStream);
-                            Log.d("errT", "success in finding file and change it to bitmap");
+                            bitmap = BitmapFactory.decodeStream(inputStream);
                         } catch (FileNotFoundException e) { e.printStackTrace(); }
 
-                        // change image into String with Base64
+                        // change image into String with Base64 and send
                         String imageData = imageToString(bitmap);
-                        params.put("image", imageData);
-                        Log.d("errT", "Here image changed to Base64~");
+                        parameters.put("image", imageData);
+                        parameters.put("name", imgName);
 
-                        //progressDialog.dismiss();
-                        return params;
+                        progressDialog.dismiss();
+                        return parameters;
                     }
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(ImagePopup.this);
@@ -156,12 +160,11 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
             }
         });
 
-
         Log.d("wrong", "successful in ImagePopup onCreate");
     }
 
     public void onClick(View v) {
-        switch(v.getId()){
+        switch(v.getId()) {
             case R.id.buttonBack:
                 finish();
         }
@@ -176,5 +179,11 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         return encodedImage;
     }
 
-
 }
+
+
+
+
+
+
+
