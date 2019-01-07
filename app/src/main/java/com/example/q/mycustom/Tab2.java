@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -64,6 +65,15 @@ public class Tab2 extends Fragment {
                 }
             });
         }
+
+        Button imageDB_Button = rootView.findViewById(R.id.imageDB_Button);
+        imageDB_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ServerImages.class);
+                startActivity(intent);
+            }
+        });
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -91,6 +101,7 @@ public class Tab2 extends Fragment {
             Toast.makeText(getActivity(), "imagepath : " + imgPath + "\nimage name : " + imgname + "!", Toast.LENGTH_SHORT).show();
             startActivityForResult(i,1);
         }
+
         public int getCount() {
             return thumbsIDList.size(); //mThumbIds.length;
         }
@@ -104,9 +115,9 @@ public class Tab2 extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d("eTest", "Tab2 getView");
             ImageView imageView;
             if (convertView == null) { // not recycled
-                Log.d("wrong", "convertView == null");
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new ViewGroup.LayoutParams(500,500));
                 imageView.setAdjustViewBounds(false);

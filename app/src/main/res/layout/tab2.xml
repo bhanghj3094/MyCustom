@@ -25,4 +25,15 @@
         android:gravity="center" />
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
+    <Button
+        android:id="@+id/imageDB_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/show_db_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

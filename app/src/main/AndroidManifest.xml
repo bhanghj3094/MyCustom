@@ -62,6 +62,8 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <activity android:name=".ServerImages"></activity>
+
     </application>
 
 </manifest>
