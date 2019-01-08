@@ -3,6 +3,8 @@ package com.example.q.mycustom;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -27,6 +29,8 @@ public class ContactPopup extends Activity {
     Context mContext;
     ProgressDialog progressDialog;
     String urlUpload = "http://143.248.140.106:1880/api/add/contact";
+    String contactName, contactNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,9 @@ public class ContactPopup extends Activity {
 
         // Information with intent
         Bundle extras = getIntent().getExtras();
-        final String contactName = extras.getString("name");
-        final String contactNumber = extras.getString("number");
+        contactName = extras.getString("name");
+        contactNumber = extras.getString("number");
+        contactNumber.replaceAll("-","");
 
         // String Full Screen View
         TextView name = findViewById(R.id.nameText);
@@ -46,7 +51,7 @@ public class ContactPopup extends Activity {
         TextView number = findViewById(R.id.numberText);
         number.setText(contactNumber);
         ImageButton buttonContactUpload = findViewById(R.id.buttonContactUpload);
-//        buttonContactUpload.setBackgroundResource(@drawable/upload);
+        buttonContactUpload.setBackgroundResource(R.drawable.upload);
         buttonContactUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +72,7 @@ public class ContactPopup extends Activity {
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "error: " + volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){ // adding parameter to send
+                }) { // adding parameter to send
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
@@ -83,9 +88,35 @@ public class ContactPopup extends Activity {
                 requestQueue.add(stringRequest);
             }
         });
+
+        ImageButton call = findViewById(R.id.call);
+        call.setBackgroundResource(R.drawable.call);
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent calla = new Intent();
+                calla.setAction(Intent.ACTION_DIAL);
+                calla.setData(Uri.parse("tel:" + contactNumber));
+                startActivity(calla);
+
+            }
+
+        });
+
+        ImageButton message = findViewById(R.id.message);
+        message.setBackgroundResource(R.drawable.message);
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent calla = new Intent();
+                calla.setAction(Intent.ACTION_SENDTO);
+                calla.setData(Uri.parse("sms:" + contactNumber));
+                startActivity(calla);
+
+            }
+
+        });
     }
-
-
 
 
 }
