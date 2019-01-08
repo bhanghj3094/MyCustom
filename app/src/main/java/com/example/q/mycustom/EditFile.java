@@ -62,15 +62,5 @@ public class EditFile extends Activity {
 //        mSocket.emit('newViewer', ())
 
 
-
-        attemptSend();
-
-        //mSocket.on("", ~~);
-
-        //여기서 socket 연결
-//        mSocket.on("enter", function(){
-//
-//        });
-
     }
 }
