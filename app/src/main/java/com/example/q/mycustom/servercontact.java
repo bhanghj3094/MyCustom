@@ -1,15 +1,13 @@
 package com.example.q.mycustom;
 
-import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +15,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -31,11 +30,11 @@ import java.io.BufferedReader;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ArrayList;
 
 
 public class servercontact extends AppCompatActivity {
+    Context context = this;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     private EditText editSearch;
@@ -56,7 +55,6 @@ public class servercontact extends AppCompatActivity {
     private TextView mTextViewResult;
     ArrayList<phonenum_item> data = new ArrayList<phonenum_item>();
     String mJsonString;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +96,17 @@ public class servercontact extends AppCompatActivity {
                 String text = editSearch.getText().toString();
                 search(text);
 
+            }
+        });
+
+        ImageButton uploadContact = findViewById(R.id.add_contact1);
+        uploadContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("eTest", "onClick!");
+                Intent intent = new Intent(context, AddContactServer.class);
+                Log.d("eTest", "Intent");
+                startActivity(intent);
             }
         });
     }

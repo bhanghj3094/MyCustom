@@ -67,6 +67,8 @@
         <activity android:name=".MakeFile">
         </activity>
 
+        <activity android:name=".AddContactServer">
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
