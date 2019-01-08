@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
@@ -35,17 +37,18 @@ public class ServerImages extends AppCompatActivity {
     String urlGetImages = "http://143.248.140.106:1880/api/show/images";
     ArrayList<String> imageNames = new ArrayList<String>();
     ArrayList<byte[]> imageObjs = new ArrayList<byte[]>();
+    ArrayList<String> deleteImg = new ArrayList<String>();
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
-            getImagesDB();
-            final ImageAdapter ia = new ImageAdapter(context, imageObjs);
-            gridview.setAdapter(ia);
-        }
-    }
+//    @Override
+//    public void onResume()
+//    {
+//        super.onResume();
+//        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
+//            getImagesDB();
+//            final ImageAdapter ia = new ImageAdapter(context, imageObjs);
+//            gridview.setAdapter(ia);
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,10 +65,33 @@ public class ServerImages extends AppCompatActivity {
         private Context mContext;
         private ArrayList<byte[]> imageArray;
         ImageView imageView;
+        String urlUpload = "http://143.248.140.106:1880/api/delete/image/%s";
 
         public ImageAdapter(Context c, ArrayList<byte[]> o) {
             mContext = c;
             imageArray = o;
+        }
+
+        public void imageDeleteDB(int position) {
+            String deleteImageName = imageNames.get(position);
+//            String deleteImageEncode = deleteImg.get(position);
+
+            String url = String.format(urlUpload, deleteImageName);
+            StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(getApplicationContext(), "Delete Success!", Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(getApplicationContext(), "error: " + volleyError.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+
+            finish();
         }
 
         @Override
@@ -116,6 +142,7 @@ public class ServerImages extends AppCompatActivity {
                         JSONObject Person = response.getJSONObject(i);
                         String name = Person.getString("name");
                         String bsImage = Person.getString("imageBase64");
+                        deleteImg.add(bsImage);
 
                         byte[] decodedString = Base64.decode(bsImage, Base64.DEFAULT);
 
@@ -127,6 +154,12 @@ public class ServerImages extends AppCompatActivity {
                     // 비동기적 코드이기 때문에 여기 있어야 한다!!!!!!
                     final ImageAdapter ia = new ImageAdapter(context, imageObjs);
                     gridview.setAdapter(ia);
+                    gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View v,
+                                                int position, long id) {
+                            ia.imageDeleteDB(position);
+                        }
+                    });
                 } catch (JSONException e) { e.printStackTrace(); }
             }
         }, new Response.ErrorListener() {

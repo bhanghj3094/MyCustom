@@ -68,6 +68,8 @@ public class AddContactServer extends AppCompatActivity {
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(AddContactServer.this);
                 requestQueue.add(stringRequest);
+
+                finish();
             }
         });
 
