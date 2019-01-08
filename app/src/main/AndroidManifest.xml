@@ -67,6 +67,12 @@
         <activity android:name=".MakeFile">
         </activity>
 
+        <activity android:name=".MergeFile">
+        </activity>
+
+        <activity android:name=".EditFile">
+        </activity>
+
         <activity android:name=".AddContactServer">
         </activity>
 

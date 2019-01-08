@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
@@ -33,6 +34,8 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -47,7 +50,7 @@ public class Tab3 extends Fragment {
     private EditText editSearch;
     ProgressDialog progressDialog;
     String text;
-    String urlUpload = "http://143.248.140.106:1880/api/search/file";
+    String urlUpload = "http://143.248.140.106:1880/api/search/file/%s", url;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,6 @@ public class Tab3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.tab3, container, false);
-
         FacebookSdk.sdkInitialize(this.getContext());
         //facebook callback
         callbackManager = CallbackManager.Factory.create();
@@ -74,7 +76,6 @@ public class Tab3 extends Fragment {
                         Log.v("result", object.toString());
                     }
                 });
-
                 Bundle parameters = new Bundle();
                 parameters.putString("fields", "id,name,email,gender,birthday");
                 graphRequest.setParameters(parameters);
@@ -82,10 +83,7 @@ public class Tab3 extends Fragment {
             }
 
             @Override
-            public void onCancel() {
-
-            }
-
+            public void onCancel() { }
             @Override
             public void onError(FacebookException error) {
                 Log.e("LoginErr", error.toString());
@@ -97,70 +95,28 @@ public class Tab3 extends Fragment {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         }
 
-
         //Input file name
         editSearch = (EditText) rootView.findViewById(R.id.SearchBar);
         editSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable editable) {
-                // input창에 문자를 입력할때마다 호출된다.
-                // search 메소드를 호출한다.
+                // input창에 문자를 입력할때마다 호출된다. search 메소드를 호출한다.
                 text = editSearch.getText().toString();
-
-
+                Log.d("abcd", "-------edittext: " + text + "-------------");
             }
         });
 
-
         //Search file
-        final ImageButton search_file = (ImageButton) rootView.findViewById(R.id.search_file);
+        final ImageButton search_file = rootView.findViewById(R.id.search_file);
         search_file.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setTitle("Uploading");
-                progressDialog.setMessage("Please wait..");
-                progressDialog.show();
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, urlUpload, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                        Intent view = new Intent(getActivity(),SearchFile.class);
-                        startActivity(view);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "error: " + volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }){ // adding parameter to send
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> parameters = new HashMap<String, String>();
-
-                                                parameters.put("name", text);
-
-
-                        progressDialog.dismiss();
-                        return parameters;
-                    }
-                };
-                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                requestQueue.add(stringRequest);
+                url = String.format(urlUpload, text);
+                searchFileDB();
             }
         });
 
@@ -169,9 +125,17 @@ public class Tab3 extends Fragment {
         make_file.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent view = new Intent(getActivity(),MakeFile.class);
+                Intent view = new Intent(getActivity(), MakeFile.class);
                 startActivity(view);
+            }
+        });
 
+        ImageButton merge_file = rootView.findViewById(R.id.merge_file);
+        merge_file.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MergeFile.class);
+                startActivity(intent);
             }
         });
 
@@ -186,5 +150,48 @@ public class Tab3 extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public void searchFileDB() {
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Searching");
+        progressDialog.setMessage("Please wait..");
+        progressDialog.show();
+
+        Log.d("abcd", "onClick!");
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("abcd", "onResponse!");
+                progressDialog.dismiss();
+                try {
+                    Log.d("abcd","in try!");
+                    Log.d("abcd", String.valueOf(response.length()));
+                    Log.d("abcd", response.toString());
+                    JSONObject File = response.getJSONObject(0);
+                    Log.d("abcd", "got response");
+                    String name = File.getString("name");
+                    String fileText = File.getString("fileText");
+                    Log.d("abcd", name);
+                    Log.d("abcd", fileText);
+
+                    // found file and move to file View
+                    Intent view = new Intent(getActivity(), SearchFile.class);
+                    view.putExtra("name", name);
+                    view.putExtra("fileText", fileText);
+                    Toast.makeText(getApplicationContext(), "Found file!", Toast.LENGTH_LONG).show();
+                    startActivity(view);
+                } catch (JSONException e) { e.printStackTrace(); }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "error: " + volleyError.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsonArrayRequest);
     }
 }

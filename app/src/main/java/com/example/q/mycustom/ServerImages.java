@@ -2,7 +2,6 @@ package com.example.q.mycustom;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,7 +10,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -30,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ServerImages extends AppCompatActivity {
     Context context = this;
@@ -47,12 +44,6 @@ public class ServerImages extends AppCompatActivity {
             getImagesDB();
             final ImageAdapter ia = new ImageAdapter(context, imageObjs);
             gridview.setAdapter(ia);
-//            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                public void onItemClick(AdapterView<?> parent, View v,
-//                                        int position, long id) {
-//                    ia.callImageViewer(position);
-//                }
-//            });
         }
     }
 
@@ -75,11 +66,6 @@ public class ServerImages extends AppCompatActivity {
         public ImageAdapter(Context c, ArrayList<byte[]> o) {
             mContext = c;
             imageArray = o;
-        }
-
-        public final void callImageViewer(int selectedIndex) {
-//            Intent i = new Intent(mContext, ImagePopup.class);
-//            startActivityForResult(i,1);
         }
 
         @Override
@@ -113,7 +99,6 @@ public class ServerImages extends AppCompatActivity {
             Glide.with(mContext).load(imageArray.get(position)).into(imageView);
             return imageView;
         }
-
     }
 
     // Get image Informations from DB
@@ -138,7 +123,7 @@ public class ServerImages extends AppCompatActivity {
                         imageObjs.add(decodedString);
                         Log.d("eTest", name);
                         Log.d("eTest", decodedString.toString());
-                }
+                    }
                     // 비동기적 코드이기 때문에 여기 있어야 한다!!!!!!
                     final ImageAdapter ia = new ImageAdapter(context, imageObjs);
                     gridview.setAdapter(ia);
