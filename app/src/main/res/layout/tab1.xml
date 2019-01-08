@@ -32,7 +32,8 @@
         android:layout_marginStart="0dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="35dp"
-        android:hint="검색어를 입력하세요." />
+        android:hint="검색어를 입력하세요."
+        android:fontFamily="@font/bmhanna_11yrs_ttf"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/phonenum"

@@ -17,6 +17,7 @@
         android:layout_marginRight="8dp"
         android:gravity="center"
         android:text="TextView"
+        android:fontFamily="@font/nanumsquareroundregular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +33,7 @@
         android:layout_marginRight="8dp"
         android:gravity="top"
         android:text="TextView"
+        android:fontFamily="@font/nanumsquareroundregular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

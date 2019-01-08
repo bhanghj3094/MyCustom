@@ -18,6 +18,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
+        android:fontFamily="@font/bmhanna_11yrs_ttf"
+        android:textSize="20pt"
         app:layout_constraintBottom_toTopOf="@+id/numberText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -27,23 +29,32 @@
 
     <TextView
         android:id="@+id/numberText"
-        android:layout_width="206dp"
+        android:layout_width="340dp"
         android:layout_height="67dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="220dp"
+        android:fontFamily="@font/bmhanna_11yrs_ttf"
         android:gravity="center"
+        android:textSize="20pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonContactUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UPLOAD"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="409dp" />
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="96dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/upload" />
 </android.support.constraint.ConstraintLayout>
