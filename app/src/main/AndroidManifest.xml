@@ -67,6 +67,11 @@
         <activity android:name=".MakeFile">
         </activity>
 
+        <activity android:name=".MergeFile">
+        </activity>
+
+        <activity android:name=".EditFile">
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -194,7 +194,7 @@ public class Tab2 extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            Log.d("eTest", "Tab2 getView");
+            Log.d("eTes", "Tab2 getView");
             ImageView imageView;
             if (convertView == null) { // not recycled
                 imageView = new ImageView(mContext);
