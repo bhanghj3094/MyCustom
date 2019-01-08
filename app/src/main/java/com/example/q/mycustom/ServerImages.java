@@ -138,7 +138,7 @@ public class ServerImages extends AppCompatActivity {
                         imageObjs.add(decodedString);
                         Log.d("eTest", name);
                         Log.d("eTest", decodedString.toString());
-                    }
+                }
                     // 비동기적 코드이기 때문에 여기 있어야 한다!!!!!!
                     final ImageAdapter ia = new ImageAdapter(context, imageObjs);
                     gridview.setAdapter(ia);

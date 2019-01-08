@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -29,11 +30,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -65,6 +69,7 @@ public class Tab1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(this.getContext());
         rootView = inflater.inflate(R.layout.tab1, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -81,8 +86,8 @@ public class Tab1 extends Fragment {
             }
             mRecyclerView = rootView.findViewById(R.id.phonenum);
             mLayoutManager = new LinearLayoutManager(getActivity());
-            mRecyclerView.setLayoutManager(mLayoutManager);
             final MyAdapter myAdapter = new MyAdapter(data);
+            mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(myAdapter);
 
             ItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
@@ -155,6 +160,11 @@ public class Tab1 extends Fragment {
                 Log.e("LoginErr", error.toString());
             }
         });
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+//        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+
+
 
         //이미지 버튼 구현
         ImageButton cloudButton = rootView.findViewById(R.id.cloudButton);
@@ -197,7 +207,6 @@ public class Tab1 extends Fragment {
         });
 
         //add to a contact 버튼
-
         ImageButton addcontact = rootView.findViewById(R.id.addcontact);
         addcontact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,6 +230,7 @@ public class Tab1 extends Fragment {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_DENIED) {
             mRecyclerView = rootView.findViewById(R.id.phonenum);
             mRecyclerView.setHasFixedSize(true);
+            mRecyclerView.addItemDecoration(new DividerItemDecoration(rootView.getContext(), 1));
             mLayoutManager = new LinearLayoutManager(getActivity());
             mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -337,8 +347,8 @@ public class Tab1 extends Fragment {
     //facebook callback
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

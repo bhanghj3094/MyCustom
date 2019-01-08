@@ -47,11 +47,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".ImagePopup"></activity>
-        <activity android:name=".ContactPopup"></activity>
-        <activity android:name=".servercontact"></activity>
-        <activity android:name=".ServerImages"></activity>
+        <activity android:name=".LoginActivity">
+        </activity>
+
+        <activity android:name=".ImagePopup">
+        </activity>
+
+        <activity android:name=".ContactPopup">
+        </activity>
+
+        <activity android:name=".servercontact">
+        </activity>
+
+        <activity android:name=".ServerImages">
+        </activity>
+
+        <activity android:name=".SearchFile">
+        </activity>
+
+        <activity android:name=".MakeFile">
+        </activity>
 
 
         <provider

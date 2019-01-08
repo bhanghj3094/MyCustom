@@ -28,8 +28,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Tab2 extends Fragment {
     View rootView;
@@ -109,6 +118,39 @@ public class Tab2 extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //facebook callback
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginButton loginButton = (LoginButton) rootView.findViewById(R.id.login_button1);
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "email"));
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        Log.v("result", object.toString());
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.e("LoginErr", error.toString());
+            }
+        });
+
 
 
         // Inflate the layout for this fragment
@@ -233,5 +275,12 @@ public class Tab2 extends Fragment {
             imageDB_Button.startAnimation(fab_open);
             isFabOpen = true;
         }
+    }
+
+    //facebook callback
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

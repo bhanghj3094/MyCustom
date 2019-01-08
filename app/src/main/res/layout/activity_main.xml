@@ -16,15 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
+            android:background="@drawable/tap_bar"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name"></android.support.v7.widget.Toolbar>
+            app:title="@string/app_name">
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
+
+        </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/tap_bar2">
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
                 android:layout_width="wrap_content"

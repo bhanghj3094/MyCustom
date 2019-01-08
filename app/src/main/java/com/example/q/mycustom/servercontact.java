@@ -234,8 +234,9 @@ public class servercontact extends AppCompatActivity {
     }
 
 
-    // + add to a contact 버튼
-    public void add_contact(View view) {
+    // add contact 버튼
+    public void add_contact1(View view) {
+
 
     }
 
