@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -174,6 +175,8 @@ public class Tab3 extends Fragment {
             }
         });
 
+        ImageView imageIcon = rootView.findViewById(R.id.imageIcon);
+        imageIcon.setAlpha(127);
 
         return rootView;
     }

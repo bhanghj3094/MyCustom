@@ -7,19 +7,29 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="348dp"
-        android:layout_height="359dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp"
+        android:id="@+id/textView2"
+        android:layout_width="197dp"
+        android:layout_height="78dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:layout_marginBottom="100dp"
         android:gravity="center"
-        android:text="Contents of file"
+        android:text="DOCS"
+        android:textSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="276dp"
+        android:layout_height="135dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="120dp"
+        android:gravity="center"
+        android:text="CLoud"
+        android:textSize="65dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -41,10 +51,10 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="149dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:visibility="visible"
@@ -54,10 +64,10 @@
     <ImageButton
         android:id="@+id/merge_file"
         android:layout_width="150dp"
-        android:layout_height="26dp"
+        android:layout_height="38dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="#00000000"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +77,8 @@
     <ImageButton
         android:id="@+id/make_file"
         android:layout_width="150dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="#00000000"
@@ -80,14 +90,25 @@
     <ImageButton
         android:id="@+id/search_file"
         android:layout_width="150dp"
-        android:layout_height="26dp"
+        android:layout_height="38dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:background="#00000000"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SearchBar"
         app:srcCompat="@drawable/search_file" />
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:layout_width="77dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="248dp"
+        android:layout_marginLeft="248dp"
+        android:layout_marginTop="328dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon" />
 
 </android.support.constraint.ConstraintLayout>

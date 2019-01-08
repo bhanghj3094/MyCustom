@@ -340,7 +340,6 @@ public class Tab1 extends Fragment {
         }
     }
 
-
     //facebook callback
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
