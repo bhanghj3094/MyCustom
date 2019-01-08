@@ -84,7 +84,7 @@ public class EditFile extends AppCompatActivity {
                             editFileContents.setText(fileContents);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Error: cannot bring File", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Error: cannot bring File", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -131,6 +131,8 @@ public class MakeFile extends Activity {
                 };
                 RequestQueue requestQueue = Volley.newRequestQueue(MakeFile.this);
                 requestQueue.add(stringRequest);
+
+                finish();
             }
         });
 
