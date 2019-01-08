@@ -9,20 +9,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
 
 import java.util.ArrayList;
 
@@ -30,11 +35,16 @@ public class Tab2 extends Fragment {
     View rootView;
     String imgname;
     GridView gridview;
+    private CallbackManager callbackManager;
+    private Animation fab_open, fab_close;
+    private Boolean isFabOpen = false;
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             gridview = rootView.findViewById(R.id.gridview);
             final ImageAdapter ia = new ImageAdapter(rootView.getContext());
@@ -66,7 +76,32 @@ public class Tab2 extends Fragment {
             });
         }
 
-        Button imageDB_Button = rootView.findViewById(R.id.imageDB_Button);
+
+        //이미지 버튼 구현
+        ImageButton cloudButton = rootView.findViewById(R.id.cloudButton1);
+        final ImageButton imageDB_Button = rootView.findViewById(R.id.imageDB_Button);
+        cloudButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //버튼 누름 유지
+                if (view.isSelected() == false) {
+                    view.setSelected(true);
+                } else {
+                    view.setSelected(false);
+                }
+
+                //숨김 버튼 다시 나타내는 애니메이션
+                Button facebookbutton = rootView.findViewById(R.id.login_button1);
+                facebookbutton.setVisibility(facebookbutton.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                imageDB_Button.setVisibility(imageDB_Button.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+
+                fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
+                fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+                anim();
+            }
+        });
         imageDB_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,10 +109,12 @@ public class Tab2 extends Fragment {
                 startActivity(intent);
             }
         });
+
+
         // Inflate the layout for this fragment
         return rootView;
     }
-    
+
     public class ImageAdapter extends BaseAdapter {
         private Context mContext;
         private String imgData = null;
@@ -99,7 +136,7 @@ public class Tab2 extends Fragment {
             i.putExtra("filename", imgname);
             i.putExtra("filepath", imgPath);
             Toast.makeText(getActivity(), "imagepath : " + imgPath + "\nimage name : " + imgname + "!", Toast.LENGTH_SHORT).show();
-            startActivityForResult(i,1);
+            startActivityForResult(i, 1);
         }
 
         public int getCount() {
@@ -119,7 +156,7 @@ public class Tab2 extends Fragment {
             ImageView imageView;
             if (convertView == null) { // not recycled
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new ViewGroup.LayoutParams(500,500));
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(500, 500));
                 imageView.setAdjustViewBounds(false);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(4, 4, 4, 4);
@@ -131,7 +168,7 @@ public class Tab2 extends Fragment {
             return imageView;
         }
 
-        private void getThumbInfo(ArrayList<String> thumbsIDs, ArrayList<String> thumbsDatas){
+        private void getThumbInfo(ArrayList<String> thumbsIDs, ArrayList<String> thumbsDatas) {
             String[] proj = {MediaStore.Images.Media._ID,
                     MediaStore.Images.Media.DATA,
                     MediaStore.Images.Media.DISPLAY_NAME};
@@ -139,7 +176,7 @@ public class Tab2 extends Fragment {
             Cursor imageCursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     proj, null, null, null);
 
-            if (imageCursor != null && imageCursor.moveToLast()){
+            if (imageCursor != null && imageCursor.moveToLast()) {
                 String thumbsID;
                 String thumbsImageID;
                 String thumbsData;
@@ -153,7 +190,7 @@ public class Tab2 extends Fragment {
                     thumbsData = imageCursor.getString(thumbsDataCol);
                     thumbsImageID = imageCursor.getString(thumbsImageIDCol);
                     num++;
-                    if (thumbsImageID != null){
+                    if (thumbsImageID != null) {
                         thumbsIDs.add(thumbsID);
                         thumbsDatas.add(thumbsData);
                     }
@@ -162,7 +199,7 @@ public class Tab2 extends Fragment {
             return;
         }
 
-        private String getImageInfo(String ImageData, String Location, String thumbID){
+        private String getImageInfo(String ImageData, String Location, String thumbID) {
             String imageDataPath = null;
 
             String[] proj = {MediaStore.Images.Media._ID,
@@ -170,10 +207,10 @@ public class Tab2 extends Fragment {
                     MediaStore.Images.Media.DISPLAY_NAME,
                     MediaStore.Images.Media.SIZE};
             Cursor imageCursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    proj, "_ID='"+ thumbID +"'", null, null);
+                    proj, "_ID='" + thumbID + "'", null, null);
 
-            if (imageCursor != null && imageCursor.moveToFirst()){
-                if (imageCursor.getCount() > 0){
+            if (imageCursor != null && imageCursor.moveToFirst()) {
+                if (imageCursor.getCount() > 0) {
                     int imgData = imageCursor.getColumnIndex(MediaStore.Images.Media.DATA);
                     int imageName = imageCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
                     imageDataPath = imageCursor.getString(imgData);
@@ -181,6 +218,20 @@ public class Tab2 extends Fragment {
                 }
             }
             return imageDataPath;
+        }
+    }
+    public void anim() {
+        Button facebookbutton = rootView.findViewById(R.id.login_button1);
+        ImageButton imageDB_Button = rootView.findViewById(R.id.imageDB_Button);
+        if (isFabOpen) {
+            facebookbutton.startAnimation(fab_close);
+            imageDB_Button.startAnimation(fab_close);
+            isFabOpen = false;
+
+        } else {
+            facebookbutton.startAnimation(fab_open);
+            imageDB_Button.startAnimation(fab_open);
+            isFabOpen = true;
         }
     }
 }

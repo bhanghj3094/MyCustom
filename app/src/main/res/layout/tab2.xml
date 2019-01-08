@@ -25,15 +25,51 @@
         android:gravity="center" />
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
-    <Button
-        android:id="@+id/imageDB_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/cloudButton1"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/show_db_image"
+        android:background="@drawable/button"
+        android:padding="0dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button1"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cloudButton1"
+        android:layout_alignEnd="@+id/cloudButton1"
+        android:layout_alignRight="@id/cloudButton1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="56dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageDB_Button"
+        android:layout_width="167dp"
+        android:layout_height="25dp"
+        android:layout_above="@+id/login_button1"
+        android:layout_alignEnd="@+id/login_button1"
+        android:layout_alignRight="@id/login_button1"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/com_facebook_auth_dialog_cancel_background"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/login_button1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/show_server_image" />
 
 </android.support.constraint.ConstraintLayout>

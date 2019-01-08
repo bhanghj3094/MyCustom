@@ -187,7 +187,8 @@ public class Tab1 extends Fragment {
         });
 
         //add to a contact 버튼
-        Button addcontact = rootView.findViewById(R.id.addcontact);
+
+        ImageButton addcontact = rootView.findViewById(R.id.addcontact);
         addcontact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -309,20 +309,20 @@ public class servercontact extends AppCompatActivity {
         return result;
     }
 
-    @Override
-    public void onBackPressed() {
-        long tempTime = System.currentTimeMillis();
-        long intervalTime = tempTime - backPressedTime;
-
-        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
-            super.onBackPressed();
-        } else {
-            backPressedTime = tempTime;
-            Intent it = new Intent(this, MainActivity.class);
-            startActivity(it);
-            finish();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        long tempTime = System.currentTimeMillis();
+//        long intervalTime = tempTime - backPressedTime;
+//
+//        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+//            super.onBackPressed();
+//        } else {
+//            backPressedTime = tempTime;
+//            Intent it = new Intent(this, MainActivity.class);
+//            startActivity(it);
+//            finish();
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
