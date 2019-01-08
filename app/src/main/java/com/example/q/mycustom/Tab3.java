@@ -179,7 +179,6 @@ public class Tab3 extends Fragment {
                     // found file and move to file View
                     Intent view = new Intent(getActivity(), SearchFile.class);
                     view.putExtra("name", name);
-                    view.putExtra("fileText", fileText);
                     Toast.makeText(getApplicationContext(), "Found file!", Toast.LENGTH_LONG).show();
                     startActivity(view);
                 } catch (JSONException e) { e.printStackTrace(); }

@@ -38,7 +38,7 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/sendFileButton"
         android:layout_width="176dp"
         android:layout_height="35dp"
         android:layout_marginEnd="16dp"
