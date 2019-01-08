@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,8 @@ public class ContactPopup extends Activity {
         name.setText(contactName);
         TextView number = findViewById(R.id.numberText);
         number.setText(contactNumber);
-        Button buttonContactUpload = findViewById(R.id.buttonContactUpload);
+        ImageButton buttonContactUpload = findViewById(R.id.buttonContactUpload);
+//        buttonContactUpload.setBackgroundResource(@drawable/upload);
         buttonContactUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
