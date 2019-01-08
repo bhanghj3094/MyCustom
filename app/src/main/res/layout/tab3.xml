@@ -45,7 +45,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:hint="파일 이름을 입력하세요."
-        android:fontFamily="@font/bmhanna_11yrs_ttf"
+        android:fontFamily="@font/nanumsquareroundregular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

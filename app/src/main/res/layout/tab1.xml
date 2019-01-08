@@ -24,16 +24,20 @@
 
     <EditText
         android:id="@+id/editSearch"
-        android:layout_width="match_parent"
+        android:layout_width="348dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="31dp"
+        android:layout_marginLeft="31dp"
         android:layout_marginTop="35dp"
-        android:hint="검색어를 입력하세요."
-        android:fontFamily="@font/bmhanna_11yrs_ttf"/>
+        android:layout_marginEnd="31dp"
+        android:layout_marginRight="31dp"
+        android:fontFamily="@font/nanumsquareroundregular"
+        android:hint="검색어를 입력하세요." />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/phonenum"

@@ -134,7 +134,7 @@ public class SearchFile extends Activity {
                             Log.d("hello", "end");
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Error: cannot bring File", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getApplicationContext(), "Error: cannot bring File", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -158,7 +158,8 @@ public class SearchFile extends Activity {
 
 
         // button for EDIT text
-        Button EditFileButton = findViewById(R.id.EditFileButton);
+        ImageButton EditFileButton = findViewById(R.id.editFileButton);
+        EditFileButton.setBackgroundResource(R.drawable.edit_file);
         EditFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
