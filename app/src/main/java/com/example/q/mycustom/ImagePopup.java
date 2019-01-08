@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImagePopup extends FragmentActivity implements View.OnClickListener {
+public class ImagePopup extends FragmentActivity {
     private Context mContext;
     String urlUpload = "http://143.248.140.106:1880/api/post/image";
     Bitmap bitmap;
@@ -64,12 +65,10 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         ImageView iv = findViewById(R.id.imageView);
         Glide.with(mContext).load(imgPath).into(iv);
 
-        // button for return
-        Button buttonBack = findViewById(R.id.buttonBack);
-        buttonBack.setOnClickListener(this);
 
         // button for sharing
-        Button buttonShare = (Button) findViewById(R.id.buttonShare);
+        ImageButton buttonShare = (ImageButton) findViewById(R.id.buttonShare);
+        buttonShare.setBackgroundResource(R.drawable.share);
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +93,8 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         // ===================================================================================== //
         /* ============================ POST IMAGE to Server =================================== */
         // ===================================================================================== //
-        Button buttonUpload = findViewById(R.id.buttonUpload);
+        ImageButton buttonUpload = (ImageButton) findViewById(R.id.buttonUpload);
+        buttonUpload.setBackgroundResource(R.drawable.upload);
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,12 +148,6 @@ public class ImagePopup extends FragmentActivity implements View.OnClickListener
         Log.d("wrong", "successful in ImagePopup onCreate");
     }
 
-    public void onClick(View v) {
-        switch(v.getId()) {
-            case R.id.buttonBack:
-                finish();
-        }
-    }
 
     private String imageToString(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
